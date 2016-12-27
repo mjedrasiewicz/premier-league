@@ -52,7 +52,7 @@
 					<li><a href="/bets">Obstawienia</a></li>
 					<li><a href="/lastgw">Poprzednia kolejka</a></li>
 					<li><a href="/rank_teams">Ranking drużyn</a></li>
-		{% if current_user.is_authenticated %}
+		{% if current_user and current_user.is_authenticated %}
 					<li><a href="{{ url_for('rank_users') }}">Ranking użytkowników</a></li>
 					<li><a href="/new_bet">Nowy zakład</a></li>
 					<li style="float:right ; text-align:right"><a href="{{ url_for('security.logout') }}">Wyloguj</a></li>

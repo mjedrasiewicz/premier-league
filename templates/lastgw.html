@@ -22,10 +22,13 @@
 								<th><center><font size="5">Goście</font></center></th>
 							</tr>
 						{%for item in items:%}
-							<tr>
-							{%for i in item:%}							
-								<th><font size="4"><center>{{ i }}</font></center></th>
-						{%endfor%}								
+							<tr>						
+								<th><font size="4"><center>{% if item.match_date != None %}{{ item.match_date }}{% else %} 0 {% endif %}</font></center></th>
+								<th><font size="4"><center>{% if item.team_home_name != None %}{{ item.team_home_name }}{% else %} 0 {% endif %}</font></center></th>
+								<th><font size="4"><center>{% if item.score_home != None %}{{ item.score_home }}{% else %} 0 {% endif %}</font></center></th>
+								<th><font size="4"><center>{% if item.score_away != None %}{{ item.score_away }}{% else %} 0 {% endif %}</font></center></th>
+								<th><font size="4"><center>{% if item.team_away_name != None %}{{ item.team_away_name }}{% else %} 0 {% endif %}</font></center></th>
+													
 							</tr>
 						{%endfor%}
 					</table></center>
