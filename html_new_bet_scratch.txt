@@ -1,0 +1,9 @@
+									<th >
+										<center>
+											<font size="4">
+												<div class="small-12 columns", name = "kto_{{ item[0] }}">
+													{{ form.bet }}
+												</div>
+											</font>
+										</center>
+									</th>

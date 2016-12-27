@@ -1,0 +1,40 @@
+{% extends "layouts/layout1.html" %}
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+{% include "security/_messages.html" %}
+{% block title %}
+    Ostatni tydzień
+{% endblock %}
+{% block content %}
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<body>
+<div class="container">
+            <section id="content">
+				<center>
+					<table border="6">
+							<tr>
+								<th><center><font size="5">Data Meczu</font></center></th>
+								<th><center><font size="5">Gospodarze</font></center></th>	
+								<th><center><font size="5">Wynik Gospodarze</font></center></th>
+								<th><center><font size="5">Wynik Goście</font></center></th>												
+								<th><center><font size="5">Goście</font></center></th>
+								<th><center><font size="5">1</font></center></th>
+								<th><center><font size="5">X</font></center></th>
+								<th><center><font size="5">2</font></center></th>
+							</tr>
+						{%for item in items:%}
+							<tr>
+							{%for i in item:%}
+								<th><center><font size="4">{% if i != None %}{{ i }}{% else %} 0 {% endif %}</font></center></th>
+						{%endfor%}								
+							</tr>
+						{%endfor%}
+					</table></center>
+            </section>
+</div>
+</body>
+{% endblock %}

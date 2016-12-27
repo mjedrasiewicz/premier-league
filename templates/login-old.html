@@ -1,0 +1,60 @@
+{% extends "layouts/layout1.html" %}
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+{% include "security/_messages.html" %}
+{% block title %}
+    Reset Password
+{% endblock %}
+{% block content %}
+    <body>
+            <hr>
+            <nav>
+                <ul>
+                    <li><a href="/bets">Obstawienia</a></li>
+                    <li><a href="/lastgw">Poprzednia kolejka</a></li>
+                    <li><a href="/rank">Ranking</a></li>
+                    <li><a href="/info">Instrukcja</a></li>
+                    <li style="float:right"><a href="/login">Logowanie</a></li>
+                    <li style="float:right"><a href="/account">Moje konto</a></li>
+                </ul>
+            </nav>
+            <hr>
+            
+            <section id="content">
+                <form>
+                    <login>
+                        <center>
+                            <input type="text" id="login1" placeholder="login" onfocus="this.placeholder=''" onblur="this.placeholder='login'" >
+                            <br>
+
+                            <input type="password" id="password1" placeholder="hasło" onfocus="this.placeholder=''" onblur="this.placeholder='hasło'" >
+                            <br>
+
+                            <input type="submit" value="Zaloguj się" onclick="login()">
+                        </center>
+                    </login>
+                    <register>
+                        <center>
+                            <input type="text" id="login2" placeholder="login" onfocus="this.placeholder=''" onblur="this.placeholder='login'" >
+                            <br>
+                            
+                            <input type="text" id="email2" placeholder="e-mail" onfocus="this.placeholder=''" onblur="this.placeholder='e-mail'" >
+                            <br>
+
+                            <input type="password" id="password2" placeholder="hasło" onfocus="this.placeholder=''" onblur="this.placeholder='hasło'" >
+                            <br>
+                            
+                            <input type="password" id="repassword2" placeholder="powtórz hasło" onfocus="this.placeholder=''" onblur="this.placeholder='powtórz hasło'" >
+                            <br>
+
+                            <input type="submit" value="Zarejestruj" onclick="register()">
+                        </center>
+                    </register>
+                            
+                </form>
+            </section>
+            
+            <footer><hr>BetPremierLeague © - BK | MJ | MP </footer>
+            
+        </section>
+    </body>
+{% endblock %}

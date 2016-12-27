@@ -1,0 +1,4 @@
+<p>Twoje hasło zostało zmienione.</p>
+{% if security.recoverable %}
+<p>Jeśli nie zmieniłeś swojego hasła, <a href="{{ url_for_security('forgot_password', _external=True) }}">kliknij tutaj w celu ponownego wysłania</a>.</p>
+{% endif %}

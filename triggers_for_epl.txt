@@ -1,0 +1,78 @@
+CREATE OR REPLACE FUNCTION create_wallet_for_new_user()
+	RETURNS trigger AS
+$BODY$
+BEGIN
+ INSERT INTO user_wallet(user_id, points_available)
+ VALUES(NEW.id, 10);
+ RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER new_user_wallet
+ AFTER INSERT
+ ON public.user
+ FOR EACH ROW
+ EXECUTE PROCEDURE create_wallet_for_new_user();
+
+
+
+CREATE OR REPLACE FUNCTION recalculate_teams_stats()
+	RETURNS trigger AS
+$BODY$
+DECLARE
+   --gf_counter INTEGER := 0;
+   --ga_counter INTEGER := 0;
+   --gf_counter_1 INTEGER := 0;
+   --gf_counter_2 INTEGER := 0;
+   --ga_counter_1 INTEGER := 0;
+   --ga_counter_2 INTEGER := 0;
+   --gd_counter INTEGER := 0;
+   --point_sum INTEGER := 0;
+   --number_of_teams INTEGER := 0;
+   --i INTEGER := 0;
+BEGIN
+    --calculation assumes that there are 20 teams taking part in the competition
+	--PERFORM count(*) as number_of_teams FROM teams;
+	FOR i IN 1..20 LOOP
+		--PERFORM count(*) as played_matches FROM game_week WHERE team_home_id = i or team_away_id = i;
+		--PERFORM count(*) as win FROM game_week WHERE (team_home_id = i and score_home > score_away) or (team_away_id = i and score_away > score_home);
+		--PERFORM count(*) as loss FROM game_week WHERE (team_home_id = i and score_home < score_away) or (team_away_id = i and score_away < score_home);
+		--PERFORM count(*) as drawns FROM game_week WHERE (team_home_id = i or team_away_id = i) and score_home = score_away;
+		--PERFORM sum(score_home) as gf_counter_1 FROM game_week WHERE team_home_id = i;
+		--PERFORM sum(score_away) as ga_counter_1 FROM game_week WHERE team_home_id = i;		
+		--PERFORM sum(score_away) as gf_counter_2 FROM game_week WHERE team_away_id = i;
+		--PERFORM sum(score_home) as ga_counter_2 FROM game_week WHERE team_away_id = i;		
+		--gf_counter := gf_counter_1 + gf_counter_2;
+		--ga_counter := ga_counter_1 + ga_counter_2;
+		--gd_counter := gf_counter - ga_counter;
+		--point_sum := win*3 + drawns;
+		BEGIN
+		--INSERT INTO team_statistics (team_id, matches, wins, loses, drawn, GF, GA, GD, points) VALUES (i, played_matches, win, loss, drawns, gf_counter, ga_counter, gd_counter, point_sum);
+		--RETURN VOID;
+		--EXCEPTION WHEN unique_violation THEN
+		UPDATE team_statistics SET
+		matches = (SELECT count(*) as played_matches FROM game_week WHERE team_home_id = i or team_away_id = i),
+		wins = (SELECT count(*) as win FROM game_week WHERE (team_home_id = i and score_home > score_away) or (team_away_id = i and score_away > score_home)), 
+		loses = (SELECT count(*) as loss FROM game_week WHERE (team_home_id = i and score_home < score_away) or (team_away_id = i and score_away < score_home)), 
+		drawn = (SELECT count(*) as drawns FROM game_week WHERE (team_home_id = i or team_away_id = i) and score_home = score_away), 
+		"GF" = (SELECT sum(score_home) as gf_counter_1 FROM game_week WHERE team_home_id = i) + (SELECT sum(score_away) as gf_counter_2 FROM game_week WHERE team_away_id = i),
+		"GA" = (SELECT sum(score_away) as ga_counter_1 FROM game_week WHERE team_home_id = i) + (SELECT sum(score_home) as ga_counter_2 FROM game_week WHERE team_away_id = i), 
+		"GD" = ((SELECT sum(score_home) as gf_counter_1 FROM game_week WHERE team_home_id = i) + (SELECT sum(score_away) as gf_counter_2 FROM game_week WHERE team_away_id = i)) - ((SELECT sum(score_away) as ga_counter_1 FROM game_week WHERE team_home_id = i) + (SELECT sum(score_home) as ga_counter_2 FROM game_week WHERE team_away_id = i)), 
+		points = ((SELECT count(*) as win FROM game_week WHERE (team_home_id = i and score_home > score_away) or (team_away_id = i and score_away > score_home))*3 + (SELECT count(*) as drawns FROM game_week WHERE (team_home_id = i or team_away_id = i) and score_home = score_away))
+		WHERE team_id = i;
+		END;
+	END LOOP;
+ RETURN NEW;	
+ END;
+$BODY$
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER new_teams_stats
+ AFTER UPDATE OF
+ score_home, score_away
+ ON public.game_week
+ FOR EACH ROW
+ EXECUTE PROCEDURE recalculate_teams_stats();

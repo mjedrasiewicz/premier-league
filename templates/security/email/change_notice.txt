@@ -1,0 +1,5 @@
+Twoje hasło zostało zmienione
+{% if security.recoverable %}
+Jeśli nie udało Ci się zmienić swojego hasła, kliknij w link poniżej, by je zresetować.
+{{ url_for_security('forgot_password', _external=True) }}
+{% endif %}

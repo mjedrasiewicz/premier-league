@@ -1,0 +1,5 @@
+Witaj {{ user.email }}!
+
+Możesz zalogować się poprzez poniźszy link:
+
+{{ login_link }}
